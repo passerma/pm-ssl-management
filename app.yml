@@ -3,3 +3,5 @@ port: 4013
 
 AccessKeyId: AccessKeyId
 AccessKeySecret: AccessKeySecret
+
+password: password

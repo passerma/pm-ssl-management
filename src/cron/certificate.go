@@ -13,8 +13,6 @@ import (
 
 var certificateStateMap = make(map[uint]int64)
 
-// var count = 0
-
 func initCertificateStateMap() {
 	var certificates []model.Certificate
 	// 只有状态不是certificate或者verify_fail的证书才需要监听
@@ -35,8 +33,7 @@ func initCertificateStateMap() {
 func initCertificateStateCron() {
 	go initCertificateStateMap()
 	c := cron.New()
-	c.AddFunc("*/10 * * * * *", func() {
-		// count++
+	c.AddFunc("*/5 * * * * *", func() {
 		for k, v := range certificateStateMap {
 			log.ComLoggerClient.Info(fmt.Sprintf("获取证书状态: id: %d, 订单: %d", k, v))
 			if state, cert, key, err := util.DescribeCertificateState(int(v)); err != nil {
@@ -155,7 +152,6 @@ func updateCertificateState(id uint, state string, cert string, key string) {
 }
 
 func AddCertificateState(id uint, orderId int64) {
-	// count = 0
 	certificateStateMap[id] = orderId
 }
 
