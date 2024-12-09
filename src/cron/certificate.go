@@ -96,7 +96,7 @@ func certificateTimeFunc() {
 
 func initCertificateTimeCron() {
 	c := cron.New()
-	c.AddFunc("0 0 * * *", certificateTimeFunc)
+	c.AddFunc("0 0 1 * *", certificateTimeFunc)
 	// 初始手动执行下，异步一下
 	go certificateTimeFunc()
 	c.Start()
