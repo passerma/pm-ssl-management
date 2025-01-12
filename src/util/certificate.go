@@ -281,3 +281,25 @@ func CreateDnsRecord(domain string, RR string, value string) error {
 	}
 	return nil
 }
+
+func GetUserCertificateOrder() {
+	client, err := CreateClient("cas.aliyuncs.com")
+	if err != nil {
+		log.ComLoggerClient.Error("GetUserCertificateOrder: ", err.Error())
+		return
+	}
+	params := CreateApiInfo("ListUserCertificateOrder", "2020-04-07")
+	queries := map[string]interface{}{}
+	queries["ShowSize"] = tea.Int(1000)
+	runtime := &service.RuntimeOptions{}
+	request := &openapi.OpenApiRequest{
+		Query: openapiutil.Query(queries),
+	}
+	data, err := client.CallApi(params, request, runtime)
+	if err != nil {
+		log.ComLoggerClient.Error("GetUserCertificateOrder: ", err.Error())
+		return
+	}
+	body := data["body"].(map[string]interface{})
+	log.ComLoggerClient.Info("GetUserCertificateOrder: ", body)
+}

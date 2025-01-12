@@ -158,3 +158,12 @@ func AddCertificateState(id uint, orderId int64) {
 func RemoveCertificateState(id uint) {
 	delete(certificateStateMap, id)
 }
+
+// {功能} 定时任务，查询证书，用于触发一次 key 调用，防止失效
+func initGetUserCertificateOrder() {
+	c := cron.New()
+	c.AddFunc("0 0 2 * *", util.GetUserCertificateOrder)
+	// 初始手动执行下，异步一下
+	go util.GetUserCertificateOrder()
+	c.Start()
+}
