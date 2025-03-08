@@ -141,7 +141,17 @@ func CanApplyCertificate() error {
 
 	log.ComLoggerClient.Info("DescribePackageState: ", body)
 
-	if body["UsedCount"].(json.Number) >= body["TotalCount"].(json.Number) {
+	usedCount, err := body["UsedCount"].(json.Number).Int64()
+	if err != nil {
+		return err
+	}
+
+	totalCount, err := body["TotalCount"].(json.Number).Int64()
+	if err != nil {
+		return err
+	}
+
+	if usedCount >= totalCount {
 		return errors.New("证书申请次数已用完")
 	}
 
